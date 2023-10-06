@@ -3,7 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import TodoListDetail from './TodoListDetail'
 import CircularProgress from '@mui/material/CircularProgress'
 
-const TodoListCard = ({ task, setTask, loadMoreData, hasMore }) => {
+export default function TodoListCard  ({ task, setTask, loadMoreData, hasMore }) {
   const groupTasksByDate = (tasks) => {
     const groupedTasks = {}
 
@@ -59,4 +59,3 @@ const TodoListCard = ({ task, setTask, loadMoreData, hasMore }) => {
   )
 }
 
-export default TodoListCard

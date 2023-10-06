@@ -77,7 +77,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex bg-violet-400 min-h-screen flex-col   items-center justify-between p-10">
+    <main className="flex bg-violet-400 min-h-screen flex-col   items-center justify-between p-10 ">
       <div className="bg-white w-full ">
         <UserProfile className="absolute" />
         <FilterButtonCard handleClickFilter={handleClickFilter} />

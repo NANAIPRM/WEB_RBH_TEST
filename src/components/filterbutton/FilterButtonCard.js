@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import FilterButton from './FilterButton.js'
 export default function FilterButtonCard({ handleClickFilter }) {
-  const [activeStatus, setActiveStatus] = useState(null)
+  const [activeStatus, setActiveStatus] = useState('TODO')
 
   const handleButtonClick = (status) => {
     handleClickFilter(status)
