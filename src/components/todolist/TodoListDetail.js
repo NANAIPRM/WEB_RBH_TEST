@@ -6,15 +6,7 @@ import Typography from '@mui/material/Typography'
 import DeleteDialog from '../dialog/DeleteDialog.js'
 import { AiOutlineLeft } from 'react-icons/ai'
 
-// Import the icons you want to use
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
-import HomeIcon from '@mui/icons-material/Home'
-import WorkIcon from '@mui/icons-material/Work'
-import SchoolIcon from '@mui/icons-material/School'
-// Add more icons as needed
-
-const iconOptions = [AccountBoxIcon, HomeIcon, WorkIcon, SchoolIcon]
-// Add more icons to the array as needed
 
 export default function TodoListDetail({ task, onDelete }) {
   const [isContentOverflowing, setIsContentOverflowing] = useState(false)
@@ -61,9 +53,6 @@ export default function TodoListDetail({ task, onDelete }) {
     setIsDeleteDialogOpen(false)
   }
 
-  // Select a random icon from the iconOptions array
-  const RandomIcon = iconOptions[Math.floor(Math.random() * iconOptions.length)]
-
   return (
     <div
       onTouchStart={handleTouchStart}
@@ -81,7 +70,7 @@ export default function TodoListDetail({ task, onDelete }) {
           }),
         }}
       >
-        <RandomIcon className="icon" />{' '}
+        <AccountBoxIcon className="icon" />{' '}
         {/* Display the randomly selected icon */}
         <Box
           sx={{
