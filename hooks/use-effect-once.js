@@ -1,20 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react'
 export default function useEffectOnce(_effect) {
-  const effect = useRef(_effect);
-  const destroy = useRef();
-  const effectCalled = useRef(false);
-  const rendered = useRef(false);
+  const effect = useRef(_effect)
+  const destroy = useRef()
+  const effectCalled = useRef(false)
+  const rendered = useRef(false)
   if (effectCalled.current) {
-    rendered.current = true;
+    rendered.current = true
   }
   useEffect(() => {
     if (!effectCalled.current) {
-      destroy.current = effect.current();
-      effectCalled.current = true;
+      destroy.current = effect.current()
+      effectCalled.current = true
     }
     return () => {
-      if (rendered.current === false) return;
-      if (destroy.current) destroy.current();
-    };
-  }, []);
+      if (rendered.current === false) return
+      if (destroy.current) destroy.current()
+    }
+  }, [])
 }
