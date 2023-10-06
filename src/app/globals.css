@@ -28,9 +28,8 @@ body {
 
 /* Add these styles to your CSS file or in your component's CSS-in-JS */
 
-.icon{
-  background-color: #E8F1FE;
+.icon {
+  background-color: #e8f1fe;
   width: 30px;
   height: 30px;
-  
 }
