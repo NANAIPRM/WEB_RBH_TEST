@@ -1,45 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import Typography from '@mui/material/Typography'
 import DeleteDialog from '../dialog/DeleteDialog.js'
-import { AiOutlineLeft } from 'react-icons/ai'
-
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import { Pagination } from 'swiper/modules'
+import '../../app/swiper.css'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
 
 export default function TodoListDetail({ task, onDelete }) {
   const [isContentOverflowing, setIsContentOverflowing] = useState(false)
   const contentRef = useRef(null)
-  const [isSliding, setIsSliding] = useState(false)
-  const [startX, setStartX] = useState(null)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-
-  const handleTouchStart = (e) => {
-    setIsSliding(false)
-    setStartX(e.touches[0].clientX)
-  }
-
-  const handleTouchMove = (e) => {
-    if (!startX) return
-
-    const currentX = e.touches[0].clientX
-    const deltaX = currentX - startX
-
-    if (deltaX < -50) {
-      setIsSliding(true)
-    } else {
-      setIsSliding(false)
-    }
-  }
-
-  const handleTouchEnd = () => {
-    if (isSliding) {
-      setIsDeleteDialogOpen(true)
-    }
-    setIsSliding(false)
-    setStartX(null)
-  }
+  const [swiper, setSwiper] = useState(null)
 
   useEffect(() => {
     if (contentRef.current) {
@@ -48,69 +20,68 @@ export default function TodoListDetail({ task, onDelete }) {
     }
   }, [task?.description])
 
+  const handleSwiperSlideChange = (swiper) => {
+    if (swiper.activeIndex === 1) {
+      setIsDeleteDialogOpen(true)
+    }
+  }
+
+  const handleCancelDelete = () => {
+    setIsDeleteDialogOpen(false)
+
+    if (swiper) {
+      swiper.slideTo(0) // Reset slide index to 0
+    }
+  }
+
   const handleDeleteConfirm = () => {
     onDelete(task.id)
     setIsDeleteDialogOpen(false)
+
+    if (swiper) {
+      swiper.slideTo(0)
+    }
   }
 
   return (
-    <div
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <Card
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          marginY: '15px',
-          boxShadow: 'none',
-          ...(isSliding && {
-            background: 'linear-gradient(to left, #fffbd5, #b20a2c)',
-          }),
-        }}
-      >
-        <AccountBoxIcon className="icon" />{' '}
-        {/* Display the randomly selected icon */}
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            '@media (min-width: 768px)': {
-              flexDirection: 'row',
-            },
-            justifyContent: 'space-between',
-          }}
+    <div>
+      <div className="flex " ref={contentRef}>
+        <Swiper
+          spaceBetween={30}
+          modules={[Pagination]}
+          className="mySwiper mt-10"
+          onSlideChange={(swiper) => handleSwiperSlideChange(swiper)}
+          onSwiper={(s) => setSwiper(s)}
         >
-          <CardContent
-            sx={{
-              maxHeight: isContentOverflowing ? '200px' : 'none',
-              overflowY: isContentOverflowing ? 'auto' : 'visible',
-            }}
-            ref={contentRef}
-          >
-            <Typography component="div" variant="h6">
-              <span className="text-black">{task?.title}</span>
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="div"
-            >
-              {task?.description}
-            </Typography>
-          </CardContent>
-          <button className="flex items-center pt-4 lg:mt-0  text-md lg:text-lg mx-auto lg:mx-0">
-            {' '}
-            <AiOutlineLeft size={24} /> DELETE
-          </button>
-        </Box>
-      </Card>
+          <SwiperSlide>
+            <div className="flex flex-col lg:flex-row items-center lg:justify-between w-full ">
+              <div className="flex w-full lg:w-3/4 items-center gap-10 ">
+                <AccountBoxIcon className="icon" />
+                <div className="flex flex-col items-start justify-start">
+                  <span className="text-black">{task?.title}</span>
+                  <span
+                    style={{
+                      maxHeight: isContentOverflowing ? '200px' : 'none',
+                      overflowY: isContentOverflowing ? 'auto' : 'visible',
+                    }}
+                    className="text-gray-400"
+                  >
+                    {task?.description}
+                  </span>
+                </div>
+              </div>
+              <button className="text-black text-md lg:text-lg mt-4 lg:mt-0 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 rounded-full p-2">
+                SWIPE HERE TO DELETE
+              </button>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide className="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 w-full h-full text-md lg:text-lg flex items-center justify-center"></SwiperSlide>
+        </Swiper>
+      </div>
 
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
+        onClose={handleCancelDelete}
         onDeleteConfirm={handleDeleteConfirm}
       />
     </div>
