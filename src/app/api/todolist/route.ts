@@ -1,4 +1,4 @@
-export async function GET(request: Request) {
+export async function GET(request) {
   const status = new URL(request.url).searchParams.get('status')
   const offset = Number(new URL(request.url).searchParams.get('offset'))
   const limit = Number(new URL(request.url).searchParams.get('limit'))
